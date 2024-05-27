@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
       fetch(url)
         .then(res => res.json())
         .then(res => {
+          console.log('Response from API:', res); // Añade esto para depuración
           // Obtenemos y recorremos los posts obtenidos
           for (let post of res.results) {
             // Ingresamos el título y contenido del post
@@ -21,6 +22,9 @@ document.addEventListener('DOMContentLoaded', () => {
           // Pintamos los enlaces de siguiente o anterior de la paginación
           links.innerHTML = (res.page > 1) ? `<button onclick="updatePosts('http://localhost:3000/api/posts?page=${res.page - 1}')">Atrás</button>` : "";
           links.innerHTML += (res.page < res.totalPages) ? `<button onclick="updatePosts('http://localhost:3000/api/posts?page=${res.page + 1}')">Siguiente</button>` : "";
+        })
+        .catch(error => {
+          console.error('Error fetching posts:', error); // Añade esto para depuración
         });
     }
   }
@@ -28,6 +32,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // Llamada inicial a la API
   updatePosts("http://localhost:3000/api/posts?page=1");
 });
+
+
 
 
 

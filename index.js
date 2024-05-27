@@ -4,7 +4,9 @@ const app = express();
 const fs = require('fs');
 const PORT = process.env.PORT ?? 3001;
 
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3001'
+}));
 app.use(express.static('public'));
 
 app.get("/api/posts", (req, res) => {
