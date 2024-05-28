@@ -11,15 +11,33 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(res => res.json())
         .then(res => {
           console.log('Response from API:', res); // Añade esto para depuración
+
+          // Verificamos si res es un array
+          if (!Array.isArray(res)) {
+            console.error('Response is not an array:', res);
+            throw new TypeError("Response is not an array");
+          }
+
           // Obtenemos y recorremos los posts obtenidos
+          for (let post of res) {
             // Ingresamos el título y contenido del post
             postList.innerHTML += `<div class="card">
-                                            <h3>${res[0].author}</h3>
-                                            <p>${res[0].title}</p>
-                                        </div>`;
+                                      <h3>${post.author}</h3>
+                                      <p>${post.title}</p>
+                                    </div>`;
+          }
+
           // Pintamos los enlaces de siguiente o anterior de la paginación
-          links.innerHTML = (res.page > 1) ? `<button onclick="updatePosts('http://localhost:3000/api/posts?page=${res.page - 1}')">Atrás</button>` : "";
-          links.innerHTML += (res.page < res.totalPages) ? `<button onclick="updatePosts('http://localhost:3000/api/posts?page=${res.page + 1}')">Siguiente</button>` : "";
+          // Pintamos los enlaces de siguiente o anterior de la paginación
+          links.innerHTML = "";
+          console.log(res.page, res.totalPages)
+          
+          if (res.page > 1) {
+            links.innerHTML += `<button onclick="updatePosts('http://localhost:3001/api/posts?page=${res.page - 1}')">Atrás</button>`;
+          }
+          if (res.page < res.totalPages) {
+            links.innerHTML += `<button onclick="updatePosts('http://localhost:3001/api/posts?page=${res.page + 1}')">Siguiente</button>`;
+          }
         })
         .catch(error => {
           console.error('Error fetching posts:', error); // Añade esto para depuración
@@ -30,9 +48,3 @@ document.addEventListener('DOMContentLoaded', () => {
   // Llamada inicial a la API
   updatePosts("http://localhost:3000/api/posts?page=1");
 });
-
-
-
-
-
-

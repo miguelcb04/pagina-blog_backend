@@ -20,8 +20,9 @@ app.get("/api/posts", (req, res) => {
   // Seleccionar los posts de la página actual
   const paginatedPosts = postData.slice(startIndex, endIndex);
 
+  // Responder con los posts paginados y la información de paginación
   res.json({
-    page,
+    page: page,
     totalPages: Math.ceil(postData.length / limit),
     results: paginatedPosts
   });
@@ -30,3 +31,4 @@ app.get("/api/posts", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
